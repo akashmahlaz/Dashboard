@@ -3,3 +3,6 @@ client/.env.local
 client/node_modules/
 server/node_modules/
 server/.env
+client/pnpm-lock.yaml
+client/pnpm-workspace.yaml
+server/pnpm-lock.yaml
