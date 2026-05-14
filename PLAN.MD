@@ -183,4 +183,50 @@ Cron scheduler --> sync jobs inside Express (or system cron calling API)
 
 ---
 
+---
+
+## Progress Log
+
+### Phase 1 — Scaffold ✅ COMPLETE (Session 2)
+
+**What was built:**
+- `server/tsconfig.json` — TypeScript config for Express (NodeNext module resolution)
+- `server/prisma/schema.prisma` — Rewritten: Auth.js models + Event, TicketSalesDaily, SyncRun. Prisma 7 compatible (no `url` in datasource, it lives in `prisma.config.ts`)
+- `server/lib/prisma.ts` — Prisma 7 singleton using `PrismaPg` driver adapter (required by Prisma 7)
+- `server/app.ts` — Clean Express entry: trust proxy, cors, ExpressAuth, health endpoint
+- `server/controllers/auth.ts` — Zod-validated signup controller, typed, no `any`
+- `server/models/users.ts` — bcryptjs password hashing, returns only safe fields
+- `server/routes/auth.ts` — Thin route, delegates to controller
+- `client/lib/constants.ts` — `APP_NAME`, `APP_TAGLINE`, `API_BASE_URL`
+- `client/lib/types.ts` — `Event`, `TicketSalesDaily`, `DailyEventRow`, `SyncStatus`, `SyncRun`, `ApiError`
+- `client/app/layout.tsx` — Updated metadata
+- `client/app/page.tsx` — Clean landing page: header, hero, Enter Dashboard CTA, footer
+- `client/components/dashboard/DashboardNav.tsx` — Sidebar nav (Overview, Events, Sync Status)
+- `client/components/dashboard/DashboardShell.tsx` — SidebarProvider + SidebarInset layout wrapper
+- `client/app/dashboard/page.tsx` — Temp dashboard: 3 stat cards + placeholder for ticket table
+- `client/components/ui/calendar.tsx` — Removed invalid `table` classname key (react-day-picker v10 compat)
+
+**Key decisions:**
+- Prisma 7 requires `@prisma/adapter-pg` + driver adapter instantiation (breaking change from v6)
+- Prisma 7 generated entry is `client.ts` not `index.js`; import from `"../generated/prisma/client.js"`
+- `react-day-picker` stays on v10; shadcn calendar `table` classname key removed (not in v10 ClassNames type)
+- `pnpm exec tsc --noEmit` is the only type check run during development — no `pnpm build` or `pnpm lint`
+
+**Current state (as of commit 0075b92):**
+- Server `tsc --noEmit` → 0 errors ✅
+- Client `tsc --noEmit` → 0 errors ✅
+- All work pushed to `main`
+
+---
+
+### Phase 1 — Next Steps
+
+- [ ] Identify the ticketing platform API(s) the client is using
+- [ ] Build the sync job: fetch from ticketing API → upsert into `ticket_sales_daily`
+- [ ] Set up cron (node-cron or system cron) to run sync at 07:00 and 19:00
+- [ ] Build the real ticket sales table in `client/app/dashboard/page.tsx`
+- [ ] Wire the table to the API via `client/lib/api/sales.ts`
+- [ ] Implement the manual "sync now" button and show `sync_runs` status
+- [ ] Set up `.env` files and Supabase connection
+
 *This plan is a living document. Update it as requirements evolve.*
