@@ -59,7 +59,9 @@ git push
 
 ## Code Quality — Hard Rules
 
-1. **200-line limit per file.** Split before you hit it, not after.
+1. **After writing or editing any TypeScript file, always run `pnpm exec tsc --noEmit` to verify correctness.** Fix all type errors before proceeding.
+2. **Never run `pnpm build` or `pnpm lint` unless the user explicitly asks.** Type checking via `tsc --noEmit` is sufficient during development.
+3. **200-line limit per file.** Split before you hit it, not after.
 2. **Aggressive component splitting.** One job per file. One concern per component.
 3. **No logic in page files.** `app/` pages are shells — they import from `components/`.
 4. **No business logic in components.** Extract to hooks or service functions.

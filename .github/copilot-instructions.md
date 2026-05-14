@@ -28,7 +28,9 @@ It is the single source of truth for what is built, what is in progress, and wha
 
 ## Code Quality — Non-Negotiable Rules
 
-1. **No file should exceed ~200 lines.** If it does, it must be split.
+1. **After writing or editing any TypeScript file, always run `pnpm exec tsc --noEmit` to verify correctness.** Fix all type errors before proceeding.
+2. **Never run `pnpm build` or `pnpm lint` unless the user explicitly asks.** Type checking via `tsc --noEmit` is sufficient during development.
+3. **No file should exceed ~200 lines.** If it does, it must be split.
 2. **Aggressively divide into components.** One concern per file. One job per component.
 3. **No barrel-of-logic files.** Extract hooks, utils, types, and constants into their own files.
 4. **Long-term manageable code only.** Write as if someone else inherits this codebase tomorrow.
